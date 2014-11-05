@@ -6,97 +6,73 @@ Toutes les commandes pour communiquer avec le serveur seront de la forme :
 	commande(arguments);
 	elle entrainerons la sérialisations d'objets de type personnes pour envoyer au serveur.
 	
-Le serveur répondra toujours avec un objet message sérializé qui contiendra éventuelement un objet personne.
+Le serveur répondra toujours avec un objet message sérializé qui contiendra éventuellement un objet personne (ou une liste).
 
-//throws exceptions ?
-return_code => return_message : 
-    "0" => "OK"
-    "1" => "Nickname already exists"
-    "2" => "Name already exists"
-    "3" => "Name doesn't exist"
-    "4" => "Nickname doesn't exist"
-    "5" => "Incorrect syntax"
-
-
-
+returnmessages : 
+    "OK"
+    "NicknameAlreadyExists"
+    "NameAlreadyExists"
+    "NameDoesntExist"
+    "NicknameDoesntExist"
 
 
 Ajouter
     Client => Serveur
-        { command : "add" , arguments : { name : "fabien", nickname : "binou" } }  
+        add(nom, surnom);		//ajoute nouvelle personne (avec surnom)
+		add(surnomExiste, surnom);	//ajoute un surnom à une personne qui existe
     Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : {} }
-    Possibles returns : 0,1,2
-    Remarques : 
-        On utilise cette requête pour ajouter à la fois un nom avec un surnom, ou un nom seul, ou un surnom a un nom déjà existant.
-            Si le surnom est vide (chaine vide),  on ajoute uniquement un nom.
-            Si le nom existe déjà, alors on ajoute uniquement le surnom (au nom).
-            Si le nom n'existe pas, alors on ajoute le couple (nom, surnom).  
+		returnmessage : "OK", "NicknameAlreadyExists", "NameAlreadyExists"
 
 Lister
     Client => Serveur
-        { command : "list" , arguments : {}}
+       list();
     Serveur => Client
-        { return_code : "0", return_message: "OK" , response : { names : [ { name : "fabien" , nicknames : ["binou","fabinou","fabyby"] }, ... ] }}
+       returnmessages : "OK" + liste d'objet personnes
 
-Lister Noms
+Lister Surnom
     Client => Serveur
-        { command : "list_names" , arguments : {}}
+       listNickname();
     Serveur => Client
-        { return_code : "0", return_message: "OK" , response : { names : ["fabien","guillaume"]}}
+       returnmessages : "OK" + liste d'objet personne
 
 Obtenir Nom
     Client => Serveur
-        { command : "get_name", arguments : { nickname : "fabinou" }}
-    Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : { name : "fabien"} }       
-    Possibles returns : 0,4
+       getName(surnom);
+	Serveur => Client
+       returnmessages : "OK", "NicknameDoesntExist" + objet personne
 
-Obtenir Surnoms
+Obtenir Surnom
     Client => Serveur
-        { command : "get_nicknames", arguments : { name : "fabien" }}
+		getNicknames(nom);
     Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : { nicknames : ["fabinou","fab","faby","fabyby"]} }      
-    Possibles returns : 0,3
+       returnmessages : "OK", "NameDoesntExist" + objet personne
 	
 Supprimer Nom
     Client => Serveur 
-        { command : "delete_name" , arguments : { name : "fabien" }}
+       deleteName(personne);
     Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : {} }
-    Possibles returns : 0,3
+       returnmessages : "OK", "NameDoesntExist"
 
-Supprimer Surnom	//2 personnes du même nom ?
+Supprimer Surnom
     Client => Serveur 
-        { command : "delete_nickname" , arguments : { nickname : "faby"}}
+       deleteNickname(surnom);
     Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : {} }
-    Possibles returns : 0,4
+       returnmessages : "OK", "NicknameDoesntExist"
 
-Modifier Nom		//2 personnes du même nom ?
+Modifier Nom
     Client => Serveur
-        { command : "edit_name" , arguments : { old : "" , new : ""}}
+       editName(personne, newNom);
     Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : {} }
-    Possibles returns : 0,2,3
+       returnmessages : "OK", "NameAlreadyExists", "NameDoesntExist"
 
 Modifier Surnom
     Client => Serveur
-        { command : "edit_nickname" , arguments : { old : "" , new : ""}}
+       editNickname(oldSurnom, newSurnom);
     Serveur => Client
-        { return_code : "return code" , return_message: "return message" , response : {} }
-    Possibles returns : 0,1,4
+       returnmessages : "OK", "NicknameAlreadyExists", "NicknameDoesntExist"
 
 Fin
     Client => Serveur
-        { command : "exit" , arguments : {}}
+       exit();
     Serveur => Client
-        { return_code : "0" , return_message: "OK" , response : {}}
-
-
-Remarque générale : 
-Pour toutes commandes ne respectant la syntaxe indiquée ci-dessus, le serveur retournera le code "5" (cf. return_code => return_message)
-Cela peut donc provenir d'un nom de commande ou d'un nom d'argument inconnus.
-Si un des arguments d'une commande est vide et que cela n'est pas autorisé explicitement dans le protocol d'application ci-dessus,
- le serveur retournera le code "5" (cf. return_code => return_message)
-
+       returnmessages : "OK"
