@@ -4,7 +4,7 @@ Serialisation : Objet
 
 Toutes les commandes pour communiquer avec le serveur seront de la forme :
 	commande(arguments);
-	elle entrainerons la sérialisations d'objets de type personnes pour envoyer au serveur.
+	elle entrainerons la sérialisations d'objets de type message pour envoyer la commande au serveur.
 	
 Le serveur répondra toujours avec un objet message sérializé qui contiendra éventuellement un objet personne (ou une liste).
 
