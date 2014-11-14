@@ -1,78 +1,56 @@
-Protocole d'application
+#####################################
+#	Protocole d'application			#
+#	Nicolas Forget - Ying Jiang		#
+#####################################
 
 Serialisation : Objet
+	Le serveur n'envoie et ne reçoit que des objets Message sérializé
 
-Toutes les commandes pour communiquer avec le serveur seront de la forme :
-	commande(arguments);
-	elle entrainerons la sérialisations d'objets de type message pour envoyer la commande au serveur.
+##############
+# OBJETS
+##############
+
+Message
+	commande:Enum[ADD, ADDS, GET, OK, EXCEPTION]
+	argument:List<String>
 	
-Le serveur répondra toujours avec un objet message sérializé qui contiendra éventuellement un objet personne (ou une liste).
-
-returnmessages : 
-    "OK"
-    "NicknameAlreadyExists"
-    "NameAlreadyExists"
-    "NameDoesntExist"
-    "NicknameDoesntExist"
-
-
-Ajouter
-    Client => Serveur
-        add(nom, surnom);		//ajoute nouvelle personne (avec surnom)
-		add(surnomExiste, surnom);	//ajoute un surnom à une personne qui existe
-    Serveur => Client
-		returnmessage : "OK", "NicknameAlreadyExists", "NameAlreadyExists"
-
-Lister
-    Client => Serveur
-       list();
-    Serveur => Client
-       returnmessages : "OK" + liste d'objet personnes
-
-Lister Surnom
-    Client => Serveur
-       listNickname();
-    Serveur => Client
-       returnmessages : "OK" + liste d'objet personne
-
-Obtenir Nom
-    Client => Serveur
-       getName(surnom);
-	Serveur => Client
-       returnmessages : "OK", "NicknameDoesntExist" + objet personne
-
-Obtenir Surnom
-    Client => Serveur
-		getNicknames(nom);
-    Serveur => Client
-       returnmessages : "OK", "NameDoesntExist" + objet personne
+Personne
+	nickname:List<String>
+	name:String
 	
-Supprimer Nom
-    Client => Serveur 
-       deleteName(personne);
-    Serveur => Client
-       returnmessages : "OK", "NameDoesntExist"
+Exceptions : NicknameAlreadyExist, NicknameNotFound, WrongSyntax, ServeurEmpty
+	Exception.toString affiche le comptenu de l'exception dans une string
 
-Supprimer Surnom
-    Client => Serveur 
-       deleteNickname(surnom);
-    Serveur => Client
-       returnmessages : "OK", "NicknameDoesntExist"
+##############
+# SERVICES		(implémenté pour l'instant)
+##############
 
-Modifier Nom
-    Client => Serveur
-       editName(personne, newNom);
-    Serveur => Client
-       returnmessages : "OK", "NameAlreadyExists", "NameDoesntExist"
+Ajouter une personne
+	C->S	newMessage(ADD, name, nickname)
+	C<-S	newMessage(OK)
+		ou	newMessage(EXCEPTION, NicknameAlreadyExist.toString)
 
-Modifier Surnom
-    Client => Serveur
-       editNickname(oldSurnom, newSurnom);
-    Serveur => Client
-       returnmessages : "OK", "NicknameAlreadyExists", "NicknameDoesntExist"
+Ajouter un surnom
+	C->S	newMessage(ADDS, nickname, newNickname)
+	C<-S	newMessage(OK)
+		ou	newMessage(EXCEPTION, NicknameNotFound.toString)
 
-Fin
-    Client => Serveur
-       exit();
-    Serveur => Client
-       returnmessages : "OK"
+Lister toutes les personnes
+	C->S	newMessage(GET, /*vide*/)
+	C<-S	newMessage(OK)
+		ou	newMessage(EXCEPTION, ServeurEmpty.toString)
+	
+Lister les surnom d'une personne
+	C->S	newMessage(GET, nickname)
+	C<-S	newMessage(OK)
+		ou	newMessage(EXCEPTION, NicknameNotFound.toString)
+
+		
+/!\ ATTENTION a la syntaxe /!\
+	C->S	newMessage(ADD, /* vide */)
+		ou	newMessage(GET, name, nickname)
+		ou	newMessage(OK, ...)
+			...
+		ou	toute autre commande mal formé
+			...
+	C<-S	newMessage(EXCEPTION, WrongSyntax.toString)
