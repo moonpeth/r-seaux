@@ -5,48 +5,51 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import protocol.RequestClient;
+
+// Object de communication
 public class Client {
 
-	public static void main(String[] args) throws ClassNotFoundException {
+	public static void main(String[] args) throws IOException {
 
-		Socket socket;
-		ObjectInputStream is;
-		ObjectOutputStream os;
-
-		try {
-
-			socket = new Socket("134.59.214.216", 6969);
-			os = new ObjectOutputStream(socket.getOutputStream());
-			is = new ObjectInputStream(socket.getInputStream());
-			Scanner sc = new Scanner(System.in);
-			String line;
-			System.out.println("Client connected at 127.0.0.1:6969");
-			while(true){
-				System.out.print("Ecris un truc : ");
-				line = sc.nextLine();
-				os.writeObject((Serializable)line);
-				os.flush();
-				System.out.println(is.readObject());
-				if(line.equals("exit")){
-					break;
-				}
-			}
-			sc.close();
-			socket.close();
-
-		}catch (UnknownHostException e) {
-			System.out.println("UnknownHost :");
-			e.printStackTrace();
-		}catch (IOException e) {
-			System.out.println("IOException :");
-			e.printStackTrace();
+		// if (args.length != 2) {
+		// System.err.println(
+		// "Usage: java EchoClient <host name> <port number>");
+		// System.exit(1);
+		// }
+		//
+		// String hostName = args[0];
+		// int portNumber = Integer.parseInt(args[1]);
+		//
+		// The client automatically closes its input and output streams
+		// and the socket because they were created in the try-with-resources
+		// statement.
+		try (Socket kkSocket = new Socket("127.0.0.1", 6866);
+				ObjectOutputStream out = new ObjectOutputStream(
+						kkSocket.getOutputStream());
+				// reading from the input stream attached to the socket
+				ObjectInputStream in = new ObjectInputStream(
+						kkSocket.getInputStream());) {
+			// listen from the client,who types into he standard input
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(
+					System.in));
+			RequestClient request = new RequestClient(stdIn);
+			out.writeObject(request);
+		} catch (UnknownHostException e) {
+			System.err.println("Don't know about host "
+					+ InetAddress.getLocalHost());
+			System.exit(1);
+		} catch (IOException e) {
+			System.err.println("Couldn't get I/O for the connection to "
+					+ InetAddress.getLocalHost());
+			System.exit(1);
 		}
+
 	}
 
 }
