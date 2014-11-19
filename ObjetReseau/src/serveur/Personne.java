@@ -1,4 +1,4 @@
-package protocol;
+package serveur;
 
 public class Personne {
 	protected String nom;

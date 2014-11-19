@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import protocol.RequestClient;
+import protocol.Message;
 
 // Object de communication
 public class Client {
@@ -29,16 +29,18 @@ public class Client {
 		// The client automatically closes its input and output streams
 		// and the socket because they were created in the try-with-resources
 		// statement.
-		try (Socket kkSocket = new Socket("127.0.0.1", 6866);
+		
+		try (Socket kkSocket = new Socket("127.0.0.1",6356);
 				ObjectOutputStream out = new ObjectOutputStream(
 						kkSocket.getOutputStream());
 				// reading from the input stream attached to the socket
 				ObjectInputStream in = new ObjectInputStream(
 						kkSocket.getInputStream());) {
+			System.out.println("client launch\n");
 			// listen from the client,who types into he standard input
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-					System.in));
-			RequestClient request = new RequestClient(stdIn);
+			Scanner stdIn=new Scanner(System.in);			
+			Message request = new Message(stdIn);
+	
 			out.writeObject(request);
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host "

@@ -8,8 +8,7 @@ public enum Type {
 		case ("adds") :return ADDS;
 		case ("get") :return GET;
 		case ("ok") :return OK;
-		case ("exception") :return EXCEPTION;
-		default : return GET;
+		default: return EXCEPTION;
 		}
 		
 	}

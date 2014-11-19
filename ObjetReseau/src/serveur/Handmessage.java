@@ -1,5 +1,10 @@
 package serveur;
 
-public class Handmessage {
+import protocol.Message;
 
+public class Handmessage {
+	public Handmessage(Message messageObject){
+		
+	}
+	
 }
