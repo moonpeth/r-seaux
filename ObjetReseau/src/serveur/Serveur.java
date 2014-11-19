@@ -1,74 +1,56 @@
 package serveur;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import protocol.Protocol;
+
 public class Serveur {
-	private static int DEFAULTPORT = 8888;
-	private ServerSocket socketServer;
-	private Socket socketClient;
-	private String line;
-	private DataInputStream is;
-	private PrintStream os;
+	static final int port = 6866;
 
-	public Serveur(){
-		this(DEFAULTPORT);
-	}
+	public static void main(String[] args) throws IOException {
 
-	public Serveur(int port){
-		try{
-			socketServer = new ServerSocket(port);
-		} catch (IOException e) {
-			System.err.println("Server could not listen on port " + port);
-			System.exit(-1);
-		}
-	}
+		// if (args.length != 1) {
+		// System.err.println("Usage: java KnockKnockServer <port number>");
+		// System.exit(1);
+		// }
+		//
+		// int portNumber = Integer.parseInt(args[0]);
+		try (ServerSocket serverSocket = new ServerSocket(port);
+				Socket clientSocket = serverSocket.accept();
+				ObjectOutputStream out = new ObjectOutputStream(
+						clientSocket.getOutputStream());
+				ObjectInputStream in = new ObjectInputStream(
+						clientSocket.getInputStream());) {
 
-	public void run() {
-		while(true){
-			try {
-				//new MultiServerThread(socketServer.accept()).start();
-				socketClient = socketServer.accept();
-				is = new DataInputStream(socketClient.getInputStream());
-				os = new PrintStream(socketClient.getOutputStream());
-				while(true){
-					line = is.readLine();
-					os.print(line);
-				}
-			} catch (IOException e) {
-				System.err.println("Server could not listen on port " + socketServer.getLocalPort());
-				System.exit(-1);
+			Object inputLine = 
+			Object outputLine =
+
+			// Initiate conversation with client
+			Protocol protocol = new Protocol();
+			outputLine = protocol.processInput(null);
+			out.writeObject(outputLine);
+
+			while ((inputLine = in.readObject()) != null) {
+				outputLine = protocol.processInput(inputLine);
+				out.writeObject(outputLine);
+				if (outputLine.equals("Bye."))
+					break;
 			}
+		} catch (IOException e) {
+			System.out
+					.println("Exception caught when trying to listen on port "
+							+ port + " or listening for a connection");
+			System.out.println(e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.err.println("ClassNotFoundException"
+					+ InetAddress.getLocalHost());
+			System.exit(1);
 		}
-	}
-
-//	class MultiServerThread extends Thread{
-//		private Socket socket = null ;
-//
-//		public MultiServerThread(Socket socket){
-//			super("MultiServerThread");
-//			this.socket = socket;
-//		}
-//
-//		public void run() {
-//			try {
-//				//TODO : body
-//			} catch (Exception e) {
-//				try {
-//					System.out.println("Client terminate");
-//					socket.close();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		}
-//	}
-	
-	public static void main(String args[]) {
-		System.out.println("Server launch at port 6969");
-		new Serveur(6969).run();
-		System.out.println("Server close");
 	}
 
 }
