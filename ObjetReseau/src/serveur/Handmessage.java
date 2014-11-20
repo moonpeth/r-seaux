@@ -28,7 +28,7 @@ public class Handmessage {
 
 			//GET	
 		case GET:
-		
+			reponse = new Message("ok",);
 			//OK
 		case OK:
 
