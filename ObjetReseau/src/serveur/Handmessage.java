@@ -1,11 +1,9 @@
 package serveur;
 
 import java.util.ArrayList;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import protocol.Message;
 import exception.NicknameAlreadyExist;
+import exception.NicknameNotFound;
 import exception.ServeurEmpty;
 
 public class Handmessage {
@@ -17,29 +15,39 @@ public class Handmessage {
 	ArrayList<String> retour = new ArrayList<String>();
 	ArrayList<String> nulle = new ArrayList<String>();
 
-	public Handmessage(Message messageObject){
-		//		//test
-		//		Personne test = new Personne("Nicolas", "Nico");
-
+	public Handmessage(Message messageObject) {
+		ArrayList<String> arg = messageObject.getArgs();
 		switch (messageObject.getRequete()) {
-		//ADD
-		case ADD:{
-			ArrayList<String>arg = messageObject.getArgs();
+		// ADD
+		case ADD: {
+
 			Personne p = new Personne(arg.get(0), arg.get(1));
-			if(li.contains(p)){
+			if (li.contains(p)) {
 				excep = new NicknameAlreadyExist().toString();
 				retour.add(excep);
 				reponse = new Message("exception", retour);
-			}else{
+			} else {
 				li.add(p);
 				reponse = new Message("ok", retour);
 			}
 			break;
 		}
 
-		//ADDS	
-		case ADDS:{
-
+		//ADDS
+		case ADDS: {
+			for (Personne p : li) {
+				for (String surnom : p.getSurnoms()) {
+					if (arg.get(0) == surnom) {
+						p.getSurnoms().add(arg.get(1));
+						retour.add("hallo");
+						reponse = new Message("ok", retour);
+						break;
+					}                 
+				}
+			}
+			excep = new NicknameNotFound().toString();
+			retour.add(excep);
+			reponse = new Message("exception", retour);
 			break;
 		}
 
@@ -73,10 +81,9 @@ public class Handmessage {
 			}
 		}
 
-		//EXCEPTION	
+		//EXCEPTION
 		default:
 
 		}
 	}
 }
-
