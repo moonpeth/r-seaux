@@ -29,8 +29,8 @@ public class Serveur {
 						clientSocket.getInputStream());) {
 			
              Message messageObject = (Message)in.readObject();
-//             Handmessage handmessage = new Handmessage(messageObject);
-           System.out.println(messageObject.toString());
+             Handmessage handmessage = new Handmessage(messageObject);
+             System.out.println(messageObject.toString());
              
 //			Object inputLine = 
 //			Object outputLine =
