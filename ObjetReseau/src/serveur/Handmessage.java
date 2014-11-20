@@ -3,6 +3,7 @@ package serveur;
 import java.util.ArrayList;
 
 import exception.NicknameAlreadyExist;
+import exception.ServeurEmpty;
 import protocol.Message;
 
 public class Handmessage {
@@ -14,9 +15,9 @@ public class Handmessage {
 	ArrayList<String> retour = new ArrayList<String>();
 
 	public Handmessage(Message messageObject){
-		//test
-		Personne test = new Personne("Nicolas", "Nico");
-		li.add(test);
+//		//test
+//		Personne test = new Personne("Nicolas", "Nico");
+//		li.add(test);
 
 		switch (messageObject.getRequete()) {
 		//ADD
@@ -31,17 +32,30 @@ public class Handmessage {
 				li.add(p);
 				reponse = new Message("ok", retour);
 			}
+			break;
 		}
 
 		//ADDS	
 		case ADDS:
-
+            break;
 			//GET	
-		case GET:
+		case GET:{
+			ArrayList<String> arg = messageObject.getArgs();
+			if(li.isEmpty()){
+				excep = new ServeurEmpty().toString();
+				retour.add(excep);
+				reponse = new Message("exception", retour);
+			}else{
+				for(Personne personne : li)
+				retour.add(personne.getNom());
+				reponse = new Message("ok", retour);
+			}
+			break;
+		}
 			
 			//OK
 		case OK:
-
+            break;
 			//EXCEPTION	
 		default:
 
