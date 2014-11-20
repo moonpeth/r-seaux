@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import protocol.Message;
 import exception.NicknameAlreadyExist;
+import exception.NicknameNotFound;
 import exception.ServeurEmpty;
 
 public class Handmessage {
@@ -14,51 +15,60 @@ public class Handmessage {
 	String excep;
 	ArrayList<String> retour = new ArrayList<String>();
 
-	public Handmessage(Message messageObject){
-		//		//test
-		//		Personne test = new Personne("Nicolas", "Nico");
-
+	public Handmessage(Message messageObject) {
+		ArrayList<String> arg = messageObject.getArgs();
 		switch (messageObject.getRequete()) {
-		//ADD
-		case ADD:{
-			ArrayList<String>arg = messageObject.getArgs();
+		// ADD
+		case ADD: {
+
 			Personne p = new Personne(arg.get(0), arg.get(1));
-			if(li.contains(p)){
+			if (li.contains(p)) {
 				excep = new NicknameAlreadyExist().toString();
 				retour.add(excep);
 				reponse = new Message("exception", retour);
-			}else{
+			} else {
 				li.add(p);
 				reponse = new Message("ok", retour);
 			}
 			break;
 		}
 
-		//ADDS	
-		case ADDS:{
-			
+		// ADDS
+		case ADDS: {
+			for (Personne p : li) {
+				for (String surnom : p.getsurnoms()) {
+					if (arg.get(0) == surnom) {
+						p.getsurnoms().add(arg.get(1));
+						retour.add("hallo");
+						reponse = new Message("ok", retour);
+						break;
+					}                 
+				}
+			}
+			excep = new NicknameNotFound().toString();
+			retour.add(excep);
+			reponse = new Message("exception", retour);
 			break;
 		}
 
-		//GET	
-		case GET:{
+		// GET
+		case GET: {
 
-			if(li.isEmpty()){
+			if (li.isEmpty()) {
 				excep = new ServeurEmpty().toString();
 				retour.add(excep);
 				reponse = new Message("exception", retour);
-			}else{
-				for(Personne personne : li)
+			} else {
+				for (Personne personne : li)
 					retour.add(personne.getNom());
 				reponse = new Message("ok", retour);
 			}
 			break;
 		}
-		
-		//EXCEPTION	
+
+		// EXCEPTION
 		default:
 
 		}
 	}
 }
-

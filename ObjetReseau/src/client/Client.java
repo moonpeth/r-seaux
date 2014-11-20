@@ -34,18 +34,27 @@ public class Client {
 			// listen from the client,who types into he standard input
 			//Scanner stdIn = new Scanner(System.in);
 			//Message request = new Message(stdIn);
+			
 			out.writeObject(createAdd("Nicolas","Nico"));
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
-			out.writeObject(createAdd("Jimmy","Jim"));
+			
+//			out.writeObject(createAdd("Jimmy","Jim"));
+//			messageObject = (Message)in.readObject();
+//			System.out.println(messageObject);
+			
+			out.writeObject(createAdds("Nico","Nicoco"));
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
-			out.writeObject(createGet());
-			messageObject = (Message)in.readObject();
-			System.out.println(messageObject);
-			out.writeObject(createExit());
-			messageObject = (Message)in.readObject();
-			System.out.println(messageObject);
+			
+//			out.writeObject(createGet());
+//			messageObject = (Message)in.readObject();
+//			System.out.println(messageObject);
+			
+//			out.writeObject(createExit());
+//			messageObject = (Message)in.readObject();
+//			System.out.println(messageObject);
+//			
 			socket.close();
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + InetAddress.getLocalHost());
@@ -60,6 +69,14 @@ public class Client {
 		ArrayList<String> add1 = new ArrayList<String>();
 		add1.add(nom);add1.add(surnom);
 		Message add = new Message("add", add1);
+		System.out.println(add);
+		return add;
+	}
+	
+	private static Message createAdds(String surnom,String newSurnom) {
+		ArrayList<String> add1 = new ArrayList<String>();
+		add1.add(surnom);add1.add(newSurnom);
+		Message add = new Message("adds", add1);
 		System.out.println(add);
 		return add;
 	}
