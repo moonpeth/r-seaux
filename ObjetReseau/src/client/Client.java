@@ -22,7 +22,7 @@ public class Client {
 	private static ObjectInputStream in;
 	private static ObjectOutputStream out;
 
-	public static void main(String[] args) throws UnknownHostException {
+	public static void main(String[] args) throws UnknownHostException, ClassNotFoundException {
 
 		try {
 			socket = new Socket(DEFAULT_IP, DEFAULT_PORT);
@@ -33,8 +33,9 @@ public class Client {
 			// listen from the client,who types into he standard input
 			//Scanner stdIn = new Scanner(System.in);
 			//Message request = new Message(stdIn);
-			Message add = createAdd();
-			out.writeObject(add);
+			out.writeObject(createAdd());
+			Message messageObject = (Message)in.readObject();
+			System.out.println(messageObject);
 			socket.close();
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + InetAddress.getLocalHost());
@@ -49,6 +50,7 @@ public class Client {
 		ArrayList<String> add1 = new ArrayList<String>();
 		add1.add("Nicolas");add1.add("Nico");
 		Message add = new Message("add", add1);
+		System.out.println(add);
 		return add;
 	}
 	

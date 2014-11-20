@@ -3,7 +3,6 @@ package serveur;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -27,20 +26,23 @@ public class Serveur {
 		//
 		// int portNumber = Integer.parseInt(args[0]);
 		System.out.println("serveur launch");
-		
+			
 		try {
 			Message messageObject;
 			serverSocket = new ServerSocket(DEFAULT_PORT);
 			Socket clientSocket = serverSocket.accept();
+			
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 			messageObject = (Message)in.readObject();
-			//Handmessage handmessage = new Handmessage(messageObject);
-			System.out.println(messageObject.toString());
+			
+			Handmessage handmessage = new Handmessage(messageObject);
+			out.writeObject(handmessage.reponse);
 			serverSocket.close();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 		
 	}
