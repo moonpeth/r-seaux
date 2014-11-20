@@ -2,6 +2,8 @@ package serveur;
 
 import java.util.ArrayList;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import protocol.Message;
 import exception.NicknameAlreadyExist;
 import exception.ServeurEmpty;
@@ -13,6 +15,7 @@ public class Handmessage {
 
 	String excep;
 	ArrayList<String> retour = new ArrayList<String>();
+	ArrayList<String> nulle = new ArrayList<String>();
 
 	public Handmessage(Message messageObject){
 		//		//test
@@ -36,25 +39,40 @@ public class Handmessage {
 
 		//ADDS	
 		case ADDS:{
-			
+
 			break;
 		}
 
 		//GET	
 		case GET:{
-
 			if(li.isEmpty()){
 				excep = new ServeurEmpty().toString();
 				retour.add(excep);
 				reponse = new Message("exception", retour);
-			}else{
-				for(Personne personne : li)
-					retour.add(personne.getNom());
+				break;
+				
+			}else if(messageObject.getArgs() == nulle){
+				//boolean find;
+				for(Personne personne : li){
+					ArrayList<String> temp = personne.getSurnoms();
+					for(String sn : temp){
+						if(sn == messageObject.getArgs().get(0)){
+							retour.add(personne.getNom());
+						}
+					}
+				}
 				reponse = new Message("ok", retour);
+				break;
+				
+			} else {
+				for(Personne personne : li){
+					retour.add(personne.getNom());
+				}
+				reponse = new Message("ok", retour);
+				break;
 			}
-			break;
 		}
-		
+
 		//EXCEPTION	
 		default:
 

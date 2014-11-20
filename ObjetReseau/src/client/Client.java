@@ -28,24 +28,39 @@ public class Client {
 			Message messageObject;
 			socket = new Socket(DEFAULT_IP, DEFAULT_PORT);
 			out = new ObjectOutputStream(socket.getOutputStream());
-			// reading from the input stream attached to the socket
 			in = new ObjectInputStream(socket.getInputStream());
 			System.out.println("client launch\n");
-			// listen from the client,who types into he standard input
-			//Scanner stdIn = new Scanner(System.in);
-			//Message request = new Message(stdIn);
+			
+			//add
 			out.writeObject(createAdd("Nicolas","Nico"));
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
+			
+			//add test exception
+			out.writeObject(createAdd("Nicolas","Nico"));
+			messageObject = (Message)in.readObject();
+			System.out.println(messageObject);
+			
+			//autre add
 			out.writeObject(createAdd("Jimmy","Jim"));
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
+			
+			//get all
 			out.writeObject(createGet());
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
+			
+			//get Jim
+			out.writeObject(createGet("Jimmy","Jim"));
+			messageObject = (Message)in.readObject();
+			System.out.println(messageObject);
+			
+			//exit
 			out.writeObject(createExit());
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
+			
 			socket.close();
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + InetAddress.getLocalHost());
@@ -67,13 +82,23 @@ public class Client {
 	private static Message createGet() {
 		ArrayList<String> getl = new ArrayList<String>();
 		Message get = new Message("get", getl);
+		System.out.println(get);
+		return get;
+	}
+	
+	private static Message createGet(String nom,String surnom) {
+		ArrayList<String> getl = new ArrayList<String>();
+		getl.add(nom);getl.add(surnom);
+		Message get = new Message("get", getl);
+		System.out.println(get);
 		return get;
 	}
 	
 	private static Message createExit() {
 		ArrayList<String> exitl = new ArrayList<String>();
-		Message get = new Message("exit", exitl);
-		return get;
+		Message ex = new Message("exit", exitl);
+		System.out.println(ex);
+		return ex;
 	}
 
 }
