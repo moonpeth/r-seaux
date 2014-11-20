@@ -28,6 +28,7 @@ public class Handmessage {
 				reponse = new Message("exception", retour);
 			} else {
 				li.add(p);
+				retour.add("add person "+arg.get(0)+" "+arg.get(1));
 				reponse = new Message("ok", retour);
 			}
 			break;
@@ -37,11 +38,11 @@ public class Handmessage {
 		case ADDS: {
 			for (Personne p : li) {
 				for (String surnom : p.getsurnoms()) {
-					if (arg.get(0) == surnom) {
+					if (arg.get(0)==surnom) {
 						p.getsurnoms().add(arg.get(1));
-						retour.add("hallo");
+						retour.add("add "+arg.get(1)+" to "+arg.get(0));
 						reponse = new Message("ok", retour);
-						break;
+						return;
 					}                 
 				}
 			}
