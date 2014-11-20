@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import protocol.Message;
 import protocol.Type;
@@ -38,7 +39,8 @@ public class Serveur {
 			while (true) {
 				messageObject = (Message) in.readObject();
 				if(messageObject.getRequete() == Type.EXIT){
-					out.writeObject(messageObject);
+					Message exit = new Message("ok", new ArrayList<String>());
+					out.writeObject(exit);
 					break;
 				}
 				handmessage = new Handmessage(messageObject);

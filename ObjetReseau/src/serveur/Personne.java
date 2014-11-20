@@ -20,7 +20,7 @@ public class Personne {
 	public String getNom() {
 		return nom;
 	}
-	public ArrayList<String> getsurnoms(){
+	public ArrayList<String> getSurnoms(){
 		return surnoms;
 	}
 	

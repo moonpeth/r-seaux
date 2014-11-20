@@ -1,7 +1,6 @@
 package serveur;
 
 import java.util.ArrayList;
-
 import protocol.Message;
 import exception.NicknameAlreadyExist;
 import exception.NicknameNotFound;
@@ -14,6 +13,7 @@ public class Handmessage {
 
 	String excep;
 	ArrayList<String> retour = new ArrayList<String>();
+	ArrayList<String> nulle = new ArrayList<String>();
 
 	public Handmessage(Message messageObject) {
 		ArrayList<String> arg = messageObject.getArgs();
@@ -34,12 +34,12 @@ public class Handmessage {
 			break;
 		}
 
-		// ADDS
+		//ADDS
 		case ADDS: {
 			for (Personne p : li) {
-				for (String surnom : p.getsurnoms()) {
+				for (String surnom : p.getSurnoms()) {
 					if (arg.get(0)==surnom) {
-						p.getsurnoms().add(arg.get(1));
+						p.getSurnoms().add(arg.get(1));
 						retour.add("add "+arg.get(1)+" to "+arg.get(0));
 						reponse = new Message("ok", retour);
 						return;
@@ -52,22 +52,37 @@ public class Handmessage {
 			break;
 		}
 
-		// GET
-		case GET: {
-
-			if (li.isEmpty()) {
+		//GET	
+		case GET:{
+			if(li.isEmpty()){
 				excep = new ServeurEmpty().toString();
 				retour.add(excep);
 				reponse = new Message("exception", retour);
-			} else {
-				for (Personne personne : li)
-					retour.add(personne.getNom());
+				break;
+				
+			}else if(messageObject.getArgs() == nulle){
+				//boolean find;
+				for(Personne personne : li){
+					ArrayList<String> temp = personne.getSurnoms();
+					for(String sn : temp){
+						if(sn == messageObject.getArgs().get(0)){
+							retour.add(personne.getNom());
+						}
+					}
+				}
 				reponse = new Message("ok", retour);
+				break;
+				
+			} else {
+				for(Personne personne : li){
+					retour.add(personne.getNom());
+				}
+				reponse = new Message("ok", retour);
+				break;
 			}
-			break;
 		}
 
-		// EXCEPTION
+		//EXCEPTION
 		default:
 
 		}
