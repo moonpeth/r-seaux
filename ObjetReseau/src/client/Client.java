@@ -57,7 +57,7 @@ public class Client {
 			System.out.println(messageObject);
 			
 			//get Jim
-			out.writeObject(createGet("Jimmy","Jim"));
+			out.writeObject(createGet("Jim"));
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
 			
@@ -99,9 +99,9 @@ public class Client {
 		return get;
 	}
 	
-	private static Message createGet(String nom,String surnom) {
+	private static Message createGet(String surnom) {
 		ArrayList<String> getl = new ArrayList<String>();
-		getl.add(nom);getl.add(surnom);
+		getl.add(surnom);
 		Message get = new Message("get", getl);
 		System.out.println(get);
 		return get;

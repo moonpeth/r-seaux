@@ -16,7 +16,9 @@ public class Handmessage {
 	ArrayList<String> nulle = new ArrayList<String>();
 
 	public Handmessage(Message messageObject) {
+
 		ArrayList<String> arg = messageObject.getArgs();
+
 		switch (messageObject.getRequete()) {
 		// ADD
 		case ADD: {
@@ -28,7 +30,7 @@ public class Handmessage {
 				reponse = new Message("exception", retour);
 			} else {
 				li.add(p);
-				retour.add("add person "+arg.get(0)+" "+arg.get(1));
+				//retour.add("add person "+arg.get(0)+" "+arg.get(1));
 				reponse = new Message("ok", retour);
 			}
 			break;
@@ -40,7 +42,7 @@ public class Handmessage {
 				for (String surnom : p.getSurnoms()) {
 					if (arg.get(0)==surnom) {
 						p.getSurnoms().add(arg.get(1));
-						retour.add("add "+arg.get(1)+" to "+arg.get(0));
+						//retour.add("add "+arg.get(1)+" to "+arg.get(0));
 						reponse = new Message("ok", retour);
 						return;
 					}                 
@@ -59,27 +61,23 @@ public class Handmessage {
 				retour.add(excep);
 				reponse = new Message("exception", retour);
 				break;
-				
-			}else if(messageObject.getArgs() == nulle){
-				//boolean find;
-				for(Personne personne : li){
-					ArrayList<String> temp = personne.getSurnoms();
-					for(String sn : temp){
-						if(sn == messageObject.getArgs().get(0)){
-							retour.add(personne.getNom());
+
+			}else if(!arg.isEmpty()){
+				for(Personne p : li){
+					for(String sn : p.getSurnoms()){
+						if(sn == arg.get(0)){
+							retour.add(p.getNom());
 						}
 					}
 				}
-				reponse = new Message("ok", retour);
-				break;
 				
 			} else {
 				for(Personne personne : li){
 					retour.add(personne.getNom());
 				}
-				reponse = new Message("ok", retour);
-				break;
 			}
+			reponse = new Message("ok", retour);
+			break;
 		}
 
 		//EXCEPTION
