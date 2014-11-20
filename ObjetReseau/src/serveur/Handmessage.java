@@ -2,22 +2,21 @@ package serveur;
 
 import java.util.ArrayList;
 
+import protocol.Message;
 import exception.NicknameAlreadyExist;
 import exception.ServeurEmpty;
-import protocol.Message;
 
 public class Handmessage {
 
-	ArrayList<Personne> li = new ArrayList<>();
+	private static ArrayList<Personne> li = new ArrayList<>();
 	Message reponse;
 
 	String excep;
 	ArrayList<String> retour = new ArrayList<String>();
 
 	public Handmessage(Message messageObject){
-//		//test
-//		Personne test = new Personne("Nicolas", "Nico");
-//		li.add(test);
+		//		//test
+		//		Personne test = new Personne("Nicolas", "Nico");
 
 		switch (messageObject.getRequete()) {
 		//ADD
@@ -36,30 +35,30 @@ public class Handmessage {
 		}
 
 		//ADDS	
-		case ADDS:
-            break;
-			//GET	
+		case ADDS:{
+			
+			break;
+		}
+
+		//GET	
 		case GET:{
-			ArrayList<String> arg = messageObject.getArgs();
+
 			if(li.isEmpty()){
 				excep = new ServeurEmpty().toString();
 				retour.add(excep);
 				reponse = new Message("exception", retour);
 			}else{
 				for(Personne personne : li)
-				retour.add(personne.getNom());
+					retour.add(personne.getNom());
 				reponse = new Message("ok", retour);
 			}
 			break;
 		}
-			
-			//OK
-		case OK:
-            break;
-			//EXCEPTION	
+		
+		//EXCEPTION	
 		default:
 
 		}
 	}
-
 }
+

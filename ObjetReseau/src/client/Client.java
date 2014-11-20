@@ -34,10 +34,16 @@ public class Client {
 			// listen from the client,who types into he standard input
 			//Scanner stdIn = new Scanner(System.in);
 			//Message request = new Message(stdIn);
-			out.writeObject(createAdd());
+			out.writeObject(createAdd("Nicolas","Nico"));
+			messageObject = (Message)in.readObject();
+			System.out.println(messageObject);
+			out.writeObject(createAdd("Jimmy","Jim"));
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
 			out.writeObject(createGet());
+			messageObject = (Message)in.readObject();
+			System.out.println(messageObject);
+			out.writeObject(createExit());
 			messageObject = (Message)in.readObject();
 			System.out.println(messageObject);
 			socket.close();
@@ -50,9 +56,9 @@ public class Client {
 		}
 	}
 
-	private static Message createAdd() {
+	private static Message createAdd(String nom,String surnom) {
 		ArrayList<String> add1 = new ArrayList<String>();
-		add1.add("Nicolas");add1.add("Nico");
+		add1.add(nom);add1.add(surnom);
 		Message add = new Message("add", add1);
 		System.out.println(add);
 		return add;
@@ -61,6 +67,12 @@ public class Client {
 	private static Message createGet() {
 		ArrayList<String> getl = new ArrayList<String>();
 		Message get = new Message("get", getl);
+		return get;
+	}
+	
+	private static Message createExit() {
+		ArrayList<String> exitl = new ArrayList<String>();
+		Message get = new Message("exit", exitl);
 		return get;
 	}
 
