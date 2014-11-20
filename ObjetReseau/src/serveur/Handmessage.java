@@ -38,11 +38,7 @@ public class Handmessage {
 
 			//GET	
 		case GET:
-<<<<<<< HEAD
-			reponse = new Message("ok",);
-=======
-
->>>>>>> c3f21d042c71237cc073314875b80fde9c32b9cf
+			
 			//OK
 		case OK:
 
