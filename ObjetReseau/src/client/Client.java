@@ -34,8 +34,9 @@ public class Client {
 			//Scanner stdIn = new Scanner(System.in);
 			//Message request = new Message(stdIn);
 			out.writeObject(createAdd());
+			out.writeObject(createGet());	
 			Message messageObject = (Message)in.readObject();
-			System.out.println(messageObject);
+			System.out.println(messageObject);			
 			socket.close();
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + InetAddress.getLocalHost());

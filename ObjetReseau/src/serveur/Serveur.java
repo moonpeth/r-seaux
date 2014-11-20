@@ -10,7 +10,6 @@ import protocol.Message;
 
 public class Serveur {
 
-	private static String DEFAULT_IP = "127.0.0.1";
 	private static int DEFAULT_PORT = 8888;
 	
 	private static ServerSocket serverSocket;

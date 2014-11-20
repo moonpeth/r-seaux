@@ -28,7 +28,7 @@ public class Handmessage {
 
 			//GET	
 		case GET:
-
+		
 			//OK
 		case OK:
 
