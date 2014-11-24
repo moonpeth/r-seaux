@@ -21,21 +21,27 @@ public class ClientQ {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			System.out.println("client launch\n");
-			out.println("HELO\nNAME:Michel Dupuit\nGET\nEND");
+
+			//add
+			out.println(createAdd("Nicolas","Nico"));
 			out.flush();
-			
+
+			//reponse
 			String s=in.readLine();
-				
 			while(!s.equals("END")){
 				System.out.println(s);
 				s=in.readLine();
 			}
-			
 			
 			socket.close();
 		}catch(IOException e){
 			e.printStackTrace();
 			System.out.println("error");
 		}
+	}
+
+	private static String createAdd(String nom,String surnom) {
+		String add = "HELO\nNAME:"+nom+" "+ surnom+"\nGET\nEND";
+		return add;
 	}
 }
