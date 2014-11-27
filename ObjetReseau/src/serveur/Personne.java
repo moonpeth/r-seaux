@@ -3,7 +3,6 @@ package serveur;
 import java.util.ArrayList;
 
 public class Personne {
-	
 	private String nom;
 	private ArrayList<String> surnoms = new ArrayList<String>();
 
@@ -16,14 +15,19 @@ public class Personne {
 		String personneString = "Nom : " + nom + " Prenom : " + surnoms;
 		return personneString;
 	}
-
+    
 	public String getNom() {
 		return nom;
 	}
+	
 	public ArrayList<String> getSurnoms(){
 		return surnoms;
 	}
 	
+	
+	
+	
+	// distinquer deux personnes
 	@Override
 	public int hashCode() {
 		final int prime = 31;
