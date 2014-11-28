@@ -15,8 +15,11 @@ import protocol.Message;
 // Object de communication
 public class Client {
 
-	private static String DEFAULT_IP = "127.0.0.1";
-	private static int DEFAULT_PORT = 8888;
+//	private static String DEFAULT_IP = "127.0.0.1";
+//	private static int DEFAULT_PORT = 8888;
+	
+	private static String DEFAULT_IP = "134.59.214.216";
+	private static int DEFAULT_PORT = 6969;
 
 	private static Socket socket;
 	private static ObjectInputStream in;

@@ -33,7 +33,7 @@ public class Serveur {
 			Handmessage handmessage;
 			serverSocket = new ServerSocket(DEFAULT_PORT);
 			Socket clientSocket = serverSocket.accept();
-
+			System.out.println("client connecte");
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 			while (true) {
