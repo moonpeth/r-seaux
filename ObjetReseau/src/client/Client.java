@@ -23,7 +23,7 @@ public class Client {
     	socket = new Socket(adrIp, port);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
-		System.out.println("client launch\n");
+		System.out.println("client arrive ;p \n");
     }
       //Function add person
     public void clientAdd(String a,String b) throws ClassNotFoundException, IOException{
@@ -106,17 +106,18 @@ public class Client {
 			
             Client client = new Client("127.0.0.1", 8888);
             
+            Client client2 = new Client("127.0.0.1", 8888);
 			//add
-			client.clientAdd("Nicolas","Nico");
+			client.clientAdd("Nicolassssssssssss","Nicos");
 			
 			//add test exception
-			client.clientAdd("Nicolas","Nico");
+			client2.clientAdd("Nicolas","Nico");
 			
 			//add another
 			client.clientAdd("Jimmy","Jim");
 			
 			//add nickname
-			client.clientAdds("Nico","Nicoco");
+			client2.clientAdds("Nico","Nicoco");
 
 			//get Jim
 			client.clientGetNickName("Jim");
@@ -128,6 +129,7 @@ public class Client {
 			
 			//exit
             client.clientExit();
+          
 
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about your host ");
