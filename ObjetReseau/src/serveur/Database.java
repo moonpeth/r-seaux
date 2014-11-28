@@ -9,8 +9,20 @@ import exception.ServeurEmpty;
 /*
  * store and trait the informations of all the persons
  * */
-public class database {
-	private static ArrayList<Personne> list = new ArrayList<>();
+public class Database {
+	private static ArrayList<Personne> list;
+	private static Database db;
+
+	private Database() {
+	}
+
+	public static Database instance() {
+		if (db == null) {
+			list = new ArrayList<Personne>();
+			db = new Database();
+		}
+		return db;
+	}
 
 	// add name nickname, means add a new person
 	public void add(String nom, String surnom) throws NicknameAlreadyExist {
@@ -22,37 +34,38 @@ public class database {
 		}
 	}
 
-	// add nickname nicknameNew 
+	// add nickname nicknameNew
 	public void adds(String surnom, String surnomN) throws NicknameNotFound {
 		for (Personne p : list) {
+
 			for (String s : p.getSurnoms()) {
-				if (surnom == s) {
+				if (surnom.equals(s)) {
 					p.getSurnoms().add(surnomN);
 					return;
 				}
-			}		
+			}
 		}
 		throw new NicknameNotFound();
 	}
-    
+
 	// two types of GET
-	public ArrayList<String> get(String atr) throws ServeurEmpty{
+	public ArrayList<String> get(String atr) throws ServeurEmpty {
 		ArrayList<String> retour = new ArrayList<String>();
-		if(list.isEmpty()){
+		if (list.isEmpty()) {
 			throw new ServeurEmpty();
-			
-		}//c->s GET ,s->c all the name
-		else if(atr==null){
+
+		}// c->s GET ,s->c all the name
+		else if (atr == null) {
 			for (Personne p : list) {
 				retour.add(p.getNom());
 			}
 			return retour;
 		}
-		//c->s  GET nickname  ,s-> name of the nickname
-		else{
+		// c->s GET nickname ,s-> name of the nickname
+		else {
 			for (Personne p : list) {
 				for (String s : p.getSurnoms()) {
-					if (s==atr) {
+					if (s.equals(atr)) {
 						retour.add(p.getNom());
 						return retour;
 					}
@@ -61,5 +74,5 @@ public class database {
 		}
 		return retour;
 	}
-    
+
 }

@@ -8,12 +8,16 @@ import exception.ServeurEmpty;
 
 public class Handmessage {
 	Message reponse;
-	ArrayList<String> retour = new ArrayList<String>();
+	Database db;
 
-	public Handmessage(Message messageObject) {
-		database db = new database();
+	//constructor
+	public Handmessage() {
+		db = Database.instance();
+		}
+    //function handmessage
+	public void hand(Message messageObject){
 		ArrayList<String> arg = messageObject.getArgs();
-
+		ArrayList<String> retour = new ArrayList<String>();
 		switch (messageObject.getRequete()) {
 		
 		// ADD NAME NICKNAME

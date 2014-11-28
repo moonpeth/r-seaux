@@ -13,36 +13,46 @@ import protocol.Type;
  * 
  * */
 public class MultiServeurThread extends Thread {
-	private Socket clientSocket = null;
+	private Socket socket = null;
 
 	// constructor
 	public MultiServeurThread(Socket socket) {
 		super("MultiServeurThread");
-		this.clientSocket = socket;
+		this.socket = socket;
 	}
 
 	// function communicate
 	public void run() {
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(
-				clientSocket.getOutputStream());
-		     ObjectInputStream in = new ObjectInputStream(
-				clientSocket.getInputStream());
-		     
-			Message messageObject;
-			
-			while ((messageObject = (Message) in.readObject())!= null) {			
-				if (messageObject.getRequete() == Type.EXIT) {
+ 
+//		            String inputLine, outputLine;
+//		            KnockKnockProtocol kkp = new KnockKnockProtocol();
+//		            outputLine = kkp.processInput(null);
+//		            out.println(outputLine);
+//		 
+//		            while ((inputLine = in.readLine()) != null) {
+//		                outputLine = kkp.processInput(inputLine);
+//		                out.println(outputLine);
+//		                if (outputLine.equals("Bye"))
+//		                    break;
+//		            }
+//		            socket.close();
+//		        } catch (IOException e) {
+//		         
+		try(ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			     ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+				){
+			Handmessage handmessage = new Handmessage();
+			Message messageObject = null;
+			while ((messageObject=(Message)in.readObject())!= null) {	
+				handmessage.hand(messageObject);
+				out.writeObject(handmessage.reponse);
+				if(messageObject.getRequete() == Type.EXIT){
 					Message exit = new Message("ok", new ArrayList<String>());
 					out.writeObject(exit);
-					System.out.println("serveur closing...");
 					break;
 				}
-				Handmessage handmessage = new Handmessage(messageObject);
-				System.out.println("envoie reponse");
-				out.writeObject(handmessage.reponse);
-			}
-			clientSocket.close();
+			}						
+			socket.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 

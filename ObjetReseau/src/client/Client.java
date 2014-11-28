@@ -20,11 +20,11 @@ public class Client {
 	Message messageObject;
 
 	// Constructor 
-	public Client(String adrIp, int port) throws ClassNotFoundException, IOException{   	
+	public Client(String name,String adrIp, int port) throws ClassNotFoundException, IOException{   	
 		socket = new Socket(adrIp, port);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
-		System.out.println("client arrive ;p \n");
+		System.out.println("client "+name+" arrive..................................\n");
 	}
 	//Function add person
 	public void clientAdd(String a,String b) throws ClassNotFoundException, IOException{
@@ -54,7 +54,6 @@ public class Client {
 	public void clientExit() throws ClassNotFoundException, IOException{
 		out.writeObject(createExit());
 		messageObject = (Message)in.readObject();
-		socket.close();
 		System.out.println(messageObject);
 	}
 	//Function close
@@ -105,33 +104,41 @@ public class Client {
 
 		try {
 
-			Client client = new Client("127.0.0.1", 8888);
-
-			Client client2 = new Client("127.0.0.1", 8888);
-			//add
+			Client client = new Client("A","127.0.0.1", 8888);
+			Client client2 = new Client("B","127.0.0.1", 8888);
+			//add , by A
+			System.out.println("\n----------A : add person-------------------------------");
 			client.clientAdd("Nicolassssssssssss","Nicos");
-
-			//add test exception
-			client2.clientAdd("Nicolas","Nico");
-
+			//add , by client2
+			System.out.println("\n----------B : add same person (EXCEPTION)--------------");
+			client2.clientAdd("Nicolassssssssssss","Nicos");				
+			//add another
+			System.out.println("\n----------A : add another two persons------------------");
+			client.clientAdd("Nicolas","Nico");
 			//add another
 			client.clientAdd("Jimmy","Jim");
-
 			//add nickname
+			System.out.println("\n----------B : add nickname-----------------------------");
 			client2.clientAdds("Nico","Nicoco");
 
 			//get Jim
+			System.out.println("\n----------A : get name ,get all,add nickname-----------");
 			client.clientGetNickName("Jim");
 
-			//get all   i don't know why it doesn't work, pas logique, bu ke xue!!! faut voir dans la class database
+			//get all   
 			client.clientGetAll();
 
 			client.clientAdds("Nicoco","Ninico");
 
+			client.clientGetNickName("Ninico");
+			System.out.println("\n----------A : EXIT--------------------------------------");
 			//exit
 			client.clientExit();
-
-
+			System.out.println("\n----------B : always alive, add-------------------------");
+            client2.clientAdd("a", "b");
+            System.out.println("\n----------B : EXIT--------------------------------------");
+            client2.clientExit();
+            
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about your host ");
 			System.exit(1);

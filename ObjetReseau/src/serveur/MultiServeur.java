@@ -16,13 +16,11 @@ public class MultiServeur {
         boolean listening = true;
          
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-        	System.out.println("multiserveur lanch,waiting for client ;)");
             while (listening) {
-            	System.out.println("waiting for connection...");
+            	System.out.println("Server lanch, waiting for connection...");
                 new MultiServeurThread(serverSocket.accept()).start();
                 System.out.println("client connected");
             }
-//            serverSocket.close();
         } catch (IOException e) {
             System.err.println("Could not listen on port " + port);
             System.exit(-1);
