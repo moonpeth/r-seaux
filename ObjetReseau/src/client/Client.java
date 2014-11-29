@@ -17,7 +17,7 @@ public class Client {
 	private Socket socket;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	Message messageObject;
+	private Message messageObject;
 
 	// Constructor 
 	public Client(String name,String adrIp, int port) throws ClassNotFoundException, IOException{   	
@@ -135,10 +135,10 @@ public class Client {
 			//exit
 			client.clientExit();
 			System.out.println("\n----------B : always alive, add-------------------------");
-            client2.clientAdd("a", "b");
-            System.out.println("\n----------B : EXIT--------------------------------------");
-            client2.clientExit();
-            
+			client2.clientAdd("a", "b");
+			System.out.println("\n----------B : EXIT--------------------------------------");
+			client2.clientExit();
+
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about your host ");
 			System.exit(1);
@@ -150,5 +150,49 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+
+	/*
+	//main test pour un seul client
+	public static void main(String[] args) {
+
+		try {
+
+			Client client = new Client("A","127.0.0.1", 8888);
+			//add , by A
+			System.out.println("\n----------A : add person-------------------------------");
+			client.clientAdd("Nicolassssssssssss","Nicos");
+			//add another
+			System.out.println("\n----------A : add another two persons------------------");
+			client.clientAdd("Nicolas","Nico");
+			//add another
+			client.clientAdd("Jimmy","Jim");
+			//add nickname
+
+			//get Jim
+			System.out.println("\n----------A : get name ,get all,add nickname-----------");
+			client.clientGetNickName("Jim");
+
+			//get all   
+			client.clientGetAll();
+
+			client.clientAdds("Nicoco","Ninico");
+
+			client.clientGetNickName("Ninico");
+			System.out.println("\n----------A : EXIT--------------------------------------");
+			//exit
+			client.clientExit();
+
+		} catch (UnknownHostException e) {
+			System.err.println("Don't know about your host ");
+			System.exit(1);
+		} catch (IOException e) {
+			System.err.println("Couldn't get I/O for the connection to the host");
+			System.exit(1);
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+		}
+	}
+	*/
 
 }

@@ -11,6 +11,7 @@ public class Message implements Serializable{
 	private Type requete;
 	private ArrayList<String> args = new ArrayList<String>();
 
+	//pour pouvoir recuperer un message depuis commandes entree au clavier
 	public Message(Scanner commande){
 		while (commande.hasNext()) {
 			String fromUser = commande.nextLine();
@@ -23,7 +24,7 @@ public class Message implements Serializable{
 			break;
 		}
 	}
-	
+
 	public Message(String req, ArrayList<String> arg){	     
 		this.requete = Type.getType(req);
 		this.args = arg;

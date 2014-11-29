@@ -22,25 +22,9 @@ public class MultiServeurThread extends Thread {
 	}
 
 	// function communicate
-	public void run() {
- 
-//		            String inputLine, outputLine;
-//		            KnockKnockProtocol kkp = new KnockKnockProtocol();
-//		            outputLine = kkp.processInput(null);
-//		            out.println(outputLine);
-//		 
-//		            while ((inputLine = in.readLine()) != null) {
-//		                outputLine = kkp.processInput(inputLine);
-//		                out.println(outputLine);
-//		                if (outputLine.equals("Bye"))
-//		                    break;
-//		            }
-//		            socket.close();
-//		        } catch (IOException e) {
-//		         
+	public void run() {		         
 		try(ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			     ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-				){
+				ObjectInputStream in = new ObjectInputStream(socket.getInputStream());){
 			Handmessage handmessage = new Handmessage();
 			Message messageObject = null;
 			while ((messageObject=(Message)in.readObject())!= null) {	
