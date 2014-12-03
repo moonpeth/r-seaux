@@ -1,6 +1,8 @@
 package RMI;
 
 import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class HWClient {
 
@@ -9,7 +11,11 @@ public class HWClient {
 			System.out.println("Recherche objet serveur");
 			//creation d'un helloworld, initialisation avec l'objet distant
 			HelloWorld hello = (HelloWorld)Naming.lookup("//localhost:8888/HelloWorld");
-//			HelloWorld hello = (HelloWorld)Naming.lookup("Helloworld");
+			
+			//MARCHE PAS !!
+//			Registry reg = LocateRegistry.getRegistry();
+//			HelloWorld hello = (HelloWorld)reg.lookup("Helloworld");
+			
 			System.out.println("Invocation methode sayHello");
 			//appel d'une methode sur objet distant
 			String result = hello.sayHello();
